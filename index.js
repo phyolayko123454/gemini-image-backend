@@ -32,7 +32,18 @@ app.post("/generate", async (req, res) => {
     );
 
     const data = await response.json();
-    res.json(data);
+
+    const imageBase64 =
+      data?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+
+    if (!imageBase64) {
+      return res.status(400).json({ error: "Image not generated" });
+    }
+
+    res.json({
+      image: "data:image/png;base64," + imageBase64
+    });
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -41,4 +52,3 @@ app.post("/generate", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
-});
