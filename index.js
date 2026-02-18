@@ -1,3 +1,16 @@
+import express from "express";
+import fetch from "node-fetch";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const app = express();
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Gemini Image Backend is running 🚀");
+});
+
 app.post("/generate", async (req, res) => {
   try {
     const { prompt } = req.body;
@@ -11,7 +24,7 @@ app.post("/generate", async (req, res) => {
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { 
-            responseModalities: ["IMAGE"]  // ဒါလေး ထည့်ပေးရမှာပါ!
+            responseModalities: ["IMAGE"] 
           }
         })
       }
@@ -29,4 +42,9 @@ app.post("/generate", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
