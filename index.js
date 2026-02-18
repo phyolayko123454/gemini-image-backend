@@ -7,6 +7,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+// Server အလုပ်လုပ်မလုပ် စစ်ဆေးရန်
 app.get("/", (req, res) => {
   res.send("Gemini Image Backend is running 🚀");
 });
